@@ -1,0 +1,3 @@
+phpdocker/
+vendor/
+docker-compose.yml

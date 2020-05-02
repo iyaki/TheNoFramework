@@ -1,0 +1,16 @@
+{
+    "name": "iyaki/the-no-framework",
+    "description": "Extremly minimalistic framework",
+    "require": {
+        "psr/http-server-handler": "^1.0",
+        "psr/http-message": "^1.0",
+        "laminas/laminas-diactoros": "^2.3",
+        "laminas/laminas-httphandlerrunner": "^1.1",
+        "atoum/atoum": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "TheNoFramework\\": "src"
+        }
+    }
+}
