@@ -1,7 +1,15 @@
 {
     "name": "iyaki/the-no-framework",
     "description": "Extremly minimalistic framework",
+    "type": "library",
+    "keywords": [
+        "iyaki",
+        "the-no-framework",
+        "TheNoFramework"
+    ],
+    "license": "MIT",
     "require": {
+        "php" : "~7.4",
         "laminas/laminas-diactoros": "^2.3",
         "laminas/laminas-httphandlerrunner": "^1.1",
         "psr/container": "^1.0",
@@ -9,9 +17,19 @@
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0"
     },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16"
+    },
     "autoload": {
         "psr-4": {
             "TheNoFramework\\": "src"
         }
+    },
+    "scripts": {
+        "check-style": "php-cs-fixer fix --dry-run --diff",
+        "fix-style": "php-cs-fixer fix --diff"
+    },
+    "config": {
+        "sort-packages": true
     }
 }
