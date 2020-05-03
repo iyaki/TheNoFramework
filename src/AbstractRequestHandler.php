@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TheNoFramework;
 
@@ -14,7 +14,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 abstract class AbstractRequestHandler implements RequestHandlerInterface
 {
     protected ResponseFactoryInterface $responseFactory;
-    
+
     private array $middlewares = [];
 
     public function __construct()
@@ -27,8 +27,10 @@ abstract class AbstractRequestHandler implements RequestHandlerInterface
     /**
      * Add PSR-15 middlewares to be executed with the handler
      *
-     * @param Psr\Http\Server\MiddlewareInterface[] $middlewares
+     * @param \Psr\Http\Server\MiddlewareInterface[] $middlewares
      * @return void
+     *
+     * @throws \TypeError
      */
     protected function addMiddlewares(array $middlewares): void
     {
@@ -37,9 +39,13 @@ abstract class AbstractRequestHandler implements RequestHandlerInterface
         })(...[...$this->middlewares, ...$middlewares]);
     }
 
+    /**
+     * Return the array of added PSR-15 middlewares
+     *
+     * @return \Psr\Http\Server\MiddlewareInterface[]
+     */
     public function getMiddlewares(): array
     {
         return $this->middlewares;
     }
-
 }
