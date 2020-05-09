@@ -4,9 +4,6 @@ declare(strict_types = 1);
 
 namespace TheNoFramework;
 
-use Laminas\Diactoros\ServerRequestFactory;
-use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
-use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,21 +14,62 @@ final class ApplicationRunner
 {
     private ?ContainerInterface $serviceContainer;
 
-    public function __construct()
+    public function __construct(?ContainerInterface $serviceContainer = null)
     {
-        require Options::AUTOLOAD_PATH;
-
-        if (Options::SERVICE_CONTAINER_WRAPPER) {
-            $this->serviceContainer = require Options::SERVICE_CONTAINER_WRAPPER;
-        }
+        $this->serviceContainer = $serviceContainer;
     }
 
-    public function run($requestHandler): void
-    {
-        $serverRequest = ServerRequestFactory::fromGlobals();
+    /**
+     * Runs the given request handler and middlewares
+     *
+     * @return ResponseInterface
+     * @param string $requestHandler
+     * @param ServerRequestInterface $serverRequest
+     * @param MiddlewareInterface[] $middlewares
+     */
+    public function run(
+        string $requestHandlerClass,
+        ServerRequestInterface $serverRequest,
+        array $middlewares = []
+    ): ResponseInterface {
+        $handler = $this->makeChainedHandler(
+            $this->getHandlerFrom($requestHandlerClass),
+            $middlewares
+        );
 
-        $handler = $this->getHandlerFrom($requestHandler);
-        foreach ($requestHandler->getMiddlewares() as $middleware) {
+        return $handler->handle($serverRequest);
+    }
+
+    /**
+     * Get the request handler object
+     *
+     * @param string $requestHandlerClass
+     * @return RequestHandlerInterface
+     */
+    private function getHandlerFrom(string $requestHandlerClass): RequestHandlerInterface
+    {
+        return (
+            null !== $this->serviceContainer && $this->serviceContainer->has($requestHandlerClass)
+            ? $this->serviceContainer->get($requestHandlerClass)
+            : new $requestHandlerClass
+        );
+
+    }
+
+    /**
+     * Creates a request handler chaining the proper hndler and the middlewares
+     *
+     * @param RequestHandlerInterface $handler
+     * @param MiddlewareInterface[] $middlewares
+     * @return RequestHandlerInterface
+     */
+    private function makeChainedHandler(RequestHandlerInterface $handler, array $middlewares): RequestHandlerInterface
+    {
+        $middlewares = (function (MiddlewareInterface ...$middlewares) {
+            return $middlewares;
+        })(...$middlewares);
+
+        foreach ($middlewares as $middleware) {
             $handler = new class($middleware, $handler) implements RequestHandlerInterface {
                 private MiddlewareInterface $middleware;
                 private RequestHandlerInterface $handler;
@@ -48,34 +86,8 @@ final class ApplicationRunner
                 }
             };
         }
-        $this->emit($handler->handle($serverRequest));
+
+        return $handler;
     }
 
-    private function emit(ResponseInterface $response): void
-    {
-        if (!$response->hasHeader('Content-Disposition')
-            && !$response->hasHeader('Content-Range')
-        ) {
-            (new SapiEmitter())->emit($response);
-            return;
-        }
-        (new SapiStreamEmitter())->emit($response);
-    }
-
-
-    private function getHandlerFrom($requestHandler): AbstractRequestHandler
-    {
-        if (is_string($requestHandler)) {
-            if (null === $this->serviceContainer) {
-                throw new \Exception('A configured properly configured service container (PSR-11 compliant) is required to use strings as argument of '.ApplicationRunner::class.'::run()');
-            }
-            return $this->serviceContainer->get($requestHandler);
-        }
-
-        if ($requestHandler instanceof AbstractRequestHandler) {
-            return $requestHandler;
-        }
-
-        throw new \TypeError(ApplicationRunner::class.'::run() only accepts strings (keys for the service container) or instances of '.AbstractRequestHandler::class.' as argument');
-    }
 }
