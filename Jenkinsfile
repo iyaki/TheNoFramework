@@ -4,7 +4,7 @@ pipeline {
     stage('Build') {
       agent {
         docker {
-          image 'docker pull php:7.4.5-cli-buster'
+          image 'php:7.4.5-cli-buster'
         }
 
       }
