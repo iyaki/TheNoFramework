@@ -50,7 +50,7 @@ jobs:
             '
             CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")
             if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php_cs(\\.dist)?|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
-            vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no ${EXTRA_ARGS}
+            [ ! -z "${EXTRA_ARGS}" ] && vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --diff --stop-on-violation --using-cache=no ${EXTRA_ARGS}
       - run: ./vendor/bin/phpunit tests
       #- run: ./vendor/bin/codecept build
       #- run: ./vendor/bin/codecept run
