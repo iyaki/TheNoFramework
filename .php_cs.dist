@@ -57,7 +57,6 @@ return \PhpCsFixer\Config::create()
     ])
     ->setIndent('    ')
     ->setLineEnding("\n")
-    ->setUsingCache(false)
     ->setCacheFile(__DIR__.'/.php_cs.cache')
     ->setFinder($finder)
 ;
