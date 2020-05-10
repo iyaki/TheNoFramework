@@ -13,6 +13,9 @@ use Psr\Http\Server\MiddlewareInterface;
 
 final class ApplicationWrapper
 {
+    private const ENV_AUTOLOAD_PATH = 'AUTOLOAD_PATH';
+
+    private const ENV_SERVICE_CONTAINER_WRAPPER = 'SERVICE_CONTAINER_WRAPPER';
 
     /**
      * Runs the given request handler and middlewares
@@ -34,10 +37,13 @@ final class ApplicationWrapper
         self::emit($response);
     }
 
+    /**
+     * @psalm-suppress UnresolvableInclude
+     */
     private static function loadAutoLoader(): void
     {
-        if (!empty($_ENV['AUTOLOAD_PATH'])) {
-            require $_ENV['AUTOLOAD_PATH'];
+        if (!empty($_ENV[self::ENV_AUTOLOAD_PATH])) {
+            require $_ENV[self::ENV_AUTOLOAD_PATH];
             return;
         }
 
@@ -49,7 +55,7 @@ final class ApplicationWrapper
 
     private static function getServiceContainer(): ?ContainerInterface
     {
-        return empty($_ENV['SERVICE_CONTAINER_WRAPPER']) ? null : $_ENV['SERVICE_CONTAINER_WRAPPER'];
+        return empty($_ENV[self::ENV_SERVICE_CONTAINER_WRAPPER]) ? null : $_ENV[self::ENV_SERVICE_CONTAINER_WRAPPER];
     }
 
     private static function emit(ResponseInterface $response): void
