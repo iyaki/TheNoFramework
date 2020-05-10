@@ -19,7 +19,6 @@ final class SampleRequestHandlerWithDependencies implements RequestHandlerInterf
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-
         $this->response->getBody()->write((string) $request->getBody());
 
         return $this->response;

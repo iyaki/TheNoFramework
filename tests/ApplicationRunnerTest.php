@@ -60,7 +60,7 @@ final class ApplicationRunnerTest extends TestCase
         $originalResponse = new ResponseMock();
         $applicationRunner = new ApplicationRunner(
             new ServiceContainerMock([
-                SampleRequestHandlerWithDependencies::class => new SampleRequestHandlerWithDependencies($originalResponse)
+                SampleRequestHandlerWithDependencies::class => new SampleRequestHandlerWithDependencies($originalResponse),
             ])
         );
 
@@ -82,7 +82,7 @@ final class ApplicationRunnerTest extends TestCase
         $originalResponse = new ResponseMock();
         $applicationRunner = new ApplicationRunner(
             new ServiceContainerMock([
-                SampleRequestHandlerWithDependencies::class => new SampleRequestHandlerWithDependencies($originalResponse)
+                SampleRequestHandlerWithDependencies::class => new SampleRequestHandlerWithDependencies($originalResponse),
             ])
         );
 
@@ -107,6 +107,4 @@ final class ApplicationRunnerTest extends TestCase
         );
         $this->assertSame($originalResponse, $applicationResponse);
     }
-
-
 }

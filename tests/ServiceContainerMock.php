@@ -19,13 +19,11 @@ final class ServiceContainerMock implements ContainerInterface
     public function get($id)
     {
         if (!$this->has($id)) {
-            throw new class ($id) extends \Exception implements NotFoundExceptionInterface
-            {
+            throw new class($id) extends \Exception implements NotFoundExceptionInterface {
                 public function __construct($id)
                 {
                     parent::__construct("No entry was found for {$id} identifier");
                 }
-
             };
         }
         return $this->container[$id];
