@@ -51,9 +51,8 @@ final class ApplicationRunner
         return (
             null !== $this->serviceContainer && $this->serviceContainer->has($requestHandlerClass)
             ? $this->serviceContainer->get($requestHandlerClass)
-            : new $requestHandlerClass
+            : new $requestHandlerClass()
         );
-
     }
 
     /**
@@ -89,5 +88,4 @@ final class ApplicationRunner
 
         return $handler;
     }
-
 }

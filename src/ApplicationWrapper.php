@@ -62,5 +62,4 @@ final class ApplicationWrapper
         }
         (new SapiStreamEmitter())->emit($response);
     }
-
 }
