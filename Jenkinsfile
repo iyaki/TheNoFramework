@@ -9,6 +9,7 @@ pipeline {
 
       }
       steps {
+        sh echo $COMMIT_RANGE
         sh 'curl -sS https://getcomposer.org/installer | php'
         sh 'php composer.phar install -o -a -n --no-scripts --no-suggest --prefer-dist'
         sh './vendor/bin/phpunit tests'
