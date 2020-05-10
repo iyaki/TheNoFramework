@@ -1,0 +1,2 @@
+# TheNoFramework
+Extremly minimal framework
