@@ -55,13 +55,58 @@ final class ApplicationRunnerTest extends TestCase
         );
     }
 
-    // public function testRunWithServiceContainerWithoutMiddlewares()
-    // {
+    public function testRunWithServiceContainerWithoutMiddlewares()
+    {
+        $originalResponse = new ResponseMock();
+        $applicationRunner = new ApplicationRunner(
+            new ServiceContainerMock([
+                SampleRequestHandlerWithDependencies::class => new SampleRequestHandlerWithDependencies($originalResponse)
+            ])
+        );
 
-    // }
+        $requestText = 'TheNoFramework';
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getBody')->willReturn(new StreamMock($requestText));
 
-    // public function testRunWithServiceContainerWithMiddlewares()
-    // {
+        $applicationResponse = $applicationRunner->run(
+            SampleRequestHandlerWithDependencies::class,
+            $request
+        );
 
-    // }
+        $this->assertSame($requestText, (string) $applicationResponse->getBody());
+        $this->assertSame($originalResponse, $applicationResponse);
+    }
+
+    public function testRunWithServiceContainerWithMiddlewares()
+    {
+        $originalResponse = new ResponseMock();
+        $applicationRunner = new ApplicationRunner(
+            new ServiceContainerMock([
+                SampleRequestHandlerWithDependencies::class => new SampleRequestHandlerWithDependencies($originalResponse)
+            ])
+        );
+
+        $requestText = 'TheNoFramework';
+        $middlewareText = 'Middleware';
+        $anotherMiddlewareText = 'AnotherMiddleware';
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->method('getBody')->willReturn(new StreamMock($requestText));
+
+        $applicationResponse = $applicationRunner->run(
+            SampleRequestHandlerWithDependencies::class,
+            $request,
+            [
+                new SampleMiddleware($middlewareText),
+                new AnotherSampleMiddleware($anotherMiddlewareText),
+            ]
+        );
+
+        $this->assertSame(
+            $requestText.$middlewareText.$anotherMiddlewareText,
+            (string) $applicationResponse->getBody()
+        );
+        $this->assertSame($originalResponse, $applicationResponse);
+    }
+
+
 }
