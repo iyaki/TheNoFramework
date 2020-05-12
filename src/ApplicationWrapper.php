@@ -24,7 +24,7 @@ final class ApplicationWrapper
      * @param MiddlewareInterface[] $middlewares
      * @return void
      */
-    public static function run(string $requestHandlerClass, array $middlewares): void
+    public static function run(string $requestHandlerClass, array $middlewares = []): void
     {
         self::loadAutoLoader();
 
