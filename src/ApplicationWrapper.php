@@ -47,7 +47,7 @@ final class ApplicationWrapper
             return;
         }
 
-        $defaultComposerAutoloaderPath = __DIR__.'/../../autoload.php';
+        $defaultComposerAutoloaderPath = __DIR__.'/../../../autoload.php';
         if (file_exists($defaultComposerAutoloaderPath)) {
             require $defaultComposerAutoloaderPath;
         }
