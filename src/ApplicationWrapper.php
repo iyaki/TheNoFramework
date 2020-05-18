@@ -42,8 +42,9 @@ final class ApplicationWrapper
      */
     private static function loadAutoLoader(): void
     {
-        if (!empty($_ENV[self::ENV_AUTOLOAD_PATH])) {
-            require $_ENV[self::ENV_AUTOLOAD_PATH];
+        $envComposerAutoloaderPath = getenv(self::ENV_AUTOLOAD_PATH);
+        if ($envComposerAutoloaderPath) {
+            require $envComposerAutoloaderPath;
             return;
         }
 
@@ -55,7 +56,11 @@ final class ApplicationWrapper
 
     private static function getServiceContainer(): ?ContainerInterface
     {
-        return empty($_ENV[self::ENV_SERVICE_CONTAINER_WRAPPER]) ? null : $_ENV[self::ENV_SERVICE_CONTAINER_WRAPPER];
+        $serviceContainer = getenv(self::ENV_SERVICE_CONTAINER_WRAPPER);
+        if ($serviceContainer) {
+            return require $serviceContainer;
+        }
+        return null;
     }
 
     private static function emit(ResponseInterface $response): void
