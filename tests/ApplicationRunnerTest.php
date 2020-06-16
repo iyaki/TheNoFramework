@@ -44,8 +44,8 @@ final class ApplicationRunnerTest extends TestCase
             SampleRequestHandler::class,
             $request,
             [
-                new SampleMiddleware($middlewareText),
-                new AnotherSampleMiddleware($anotherMiddlewareText),
+                SampleMiddleware::class,
+                AnotherSampleMiddleware::class,
             ]
         );
 
@@ -79,16 +79,20 @@ final class ApplicationRunnerTest extends TestCase
 
     public function testRunWithServiceContainerWithMiddlewares()
     {
+
+        $requestText = 'TheNoFramework';
+        $middlewareText = 'MiddlewareFromServiceContainer';
+        $anotherMiddlewareText = 'AnotherMiddlewareFromServiceContainer';
+
         $originalResponse = new ResponseMock();
         $applicationRunner = new ApplicationRunner(
             new ServiceContainerMock([
                 SampleRequestHandlerWithDependencies::class => new SampleRequestHandlerWithDependencies($originalResponse),
+                SampleMiddleware::class => new SampleMiddleware($middlewareText),
+                AnotherSampleMiddleware::class => new AnotherSampleMiddleware($anotherMiddlewareText),
             ])
         );
 
-        $requestText = 'TheNoFramework';
-        $middlewareText = 'Middleware';
-        $anotherMiddlewareText = 'AnotherMiddleware';
         $request = $this->createMock(ServerRequestInterface::class);
         $request->method('getBody')->willReturn(new StreamMock($requestText));
 
@@ -96,8 +100,8 @@ final class ApplicationRunnerTest extends TestCase
             SampleRequestHandlerWithDependencies::class,
             $request,
             [
-                new SampleMiddleware($middlewareText),
-                new AnotherSampleMiddleware($anotherMiddlewareText),
+                SampleMiddleware::class,
+                AnotherSampleMiddleware::class,
             ]
         );
 

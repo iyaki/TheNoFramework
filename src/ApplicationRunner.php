@@ -25,7 +25,7 @@ final class ApplicationRunner
      * @return ResponseInterface
      * @param string $requestHandler
      * @param ServerRequestInterface $serverRequest
-     * @param MiddlewareInterface[] $middlewares
+     * @param string[] $middlewares
      */
     public function run(
         string $requestHandlerClass,
@@ -34,7 +34,7 @@ final class ApplicationRunner
     ): ResponseInterface {
         $handler = $this->makeChainedHandler(
             $this->getHandlerFrom($requestHandlerClass),
-            $middlewares
+            $this->getMiddlewaresFrom($middlewares)
         );
 
         return $handler->handle($serverRequest);
@@ -52,6 +52,24 @@ final class ApplicationRunner
             null !== $this->serviceContainer && $this->serviceContainer->has($requestHandlerClass)
             ? $this->serviceContainer->get($requestHandlerClass)
             : new $requestHandlerClass()
+        );
+    }
+
+    /**
+     * Get the middlewares objects array
+     *
+     * @param string[] $middlewareClassArray
+     * @return MiddlewareInterface[]
+     */
+    private function getMiddlewaresFrom(array $middlewareClassArray): array
+    {
+        return array_map(
+            fn(string $middlewareClass): MiddlewareInterface => (
+                null !== $this->serviceContainer && $this->serviceContainer->has($middlewareClass)
+                ? $this->serviceContainer->get($middlewareClass)
+                : new $middlewareClass()
+            ),
+            $middlewareClassArray
         );
     }
 

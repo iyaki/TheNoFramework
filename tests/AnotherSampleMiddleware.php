@@ -13,7 +13,7 @@ final class AnotherSampleMiddleware implements MiddlewareInterface
 {
     private string $textToAdd;
 
-    public function __construct(string $textToAdd)
+    public function __construct(string $textToAdd = 'AnotherMiddleware')
     {
         $this->textToAdd = $textToAdd;
     }

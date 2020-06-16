@@ -21,7 +21,7 @@ final class ApplicationWrapper
      * Runs the given request handler and middlewares
      *
      * @param string $requestHandlerClass
-     * @param MiddlewareInterface[] $middlewares
+     * @param string[] $middlewares
      * @return void
      */
     public static function run(string $requestHandlerClass, array $middlewares = []): void
