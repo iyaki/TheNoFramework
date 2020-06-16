@@ -37,9 +37,6 @@ final class ApplicationWrapper
         self::emit($response);
     }
 
-    /**
-     * @psalm-suppress UnresolvableInclude
-     */
     private static function loadAutoLoader(): void
     {
         $envComposerAutoloaderPath = getenv(self::ENV_AUTOLOAD_PATH);
