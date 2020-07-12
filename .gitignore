@@ -1,4 +1,2 @@
-phpdocker/
 vendor/
-docker-compose.yml
 .php_cs.cache
