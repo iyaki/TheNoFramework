@@ -64,7 +64,7 @@ final class ApplicationRunner
     private function getMiddlewaresFrom(array $middlewareClassArray): array
     {
         return array_map(
-            fn(string $middlewareClass): MiddlewareInterface => (
+            fn (string $middlewareClass): MiddlewareInterface => (
                 null !== $this->serviceContainer && $this->serviceContainer->has($middlewareClass)
                 ? $this->serviceContainer->get($middlewareClass)
                 : new $middlewareClass()

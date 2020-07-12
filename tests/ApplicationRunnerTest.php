@@ -79,7 +79,6 @@ final class ApplicationRunnerTest extends TestCase
 
     public function testRunWithServiceContainerWithMiddlewares()
     {
-
         $requestText = 'TheNoFramework';
         $middlewareText = 'MiddlewareFromServiceContainer';
         $anotherMiddlewareText = 'AnotherMiddlewareFromServiceContainer';
