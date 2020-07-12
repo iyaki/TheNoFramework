@@ -40,6 +40,16 @@ final class ApplicationRunner
         return $handler->handle($serverRequest);
     }
 
+    public function __clone()
+    {
+        throw new \DomainException('Cloning this class is not allowed');
+    }
+
+    public function __sleep()
+    {
+        throw new \DomainException('This class can\'t be serialized');
+    }
+
     /**
      * Get the request handler object
      *

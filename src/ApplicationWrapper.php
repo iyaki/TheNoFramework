@@ -36,6 +36,16 @@ final class ApplicationWrapper
         self::emit($response);
     }
 
+    public function __clone()
+    {
+        throw new \DomainException('Cloning this class is not allowed');
+    }
+
+    public function __sleep()
+    {
+        throw new \DomainException('This class can\'t be serialized');
+    }
+
     private static function loadAutoLoader(): void
     {
         $envComposerAutoloaderPath = getenv(self::ENV_AUTOLOAD_PATH);
