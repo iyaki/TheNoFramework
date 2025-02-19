@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TheNoFramework;
 
@@ -12,7 +12,8 @@ final readonly class SampleRequestHandlerWithDependencies implements RequestHand
 {
     public function __construct(
         private ResponseInterface $response
-    ) { }
+    ) {
+    }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

@@ -7,7 +7,7 @@ We accept contributions via Pull Requests on [Github](https://github.com/iyaki/T
 
 ## Pull Requests
 
-- Check the code style with `$ composer check-style` and fix it with `$ composer fix-style`.
+- Check the code style with `$ composer style-check` and fix it with `$ composer style-fix`.
 
 - **Add tests!** - Your patch won't be accepted if it doesn't have tests.
 

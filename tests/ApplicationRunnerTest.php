@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TheNoFramework;
 
@@ -45,7 +45,7 @@ final class ApplicationRunnerTest extends TestCase
         );
 
         $this->assertSame(
-            $requestText.$middlewareText.$anotherMiddlewareText,
+            $requestText . $middlewareText . $anotherMiddlewareText,
             (string) $applicationResponse->getBody()
         );
     }
@@ -100,7 +100,7 @@ final class ApplicationRunnerTest extends TestCase
         );
 
         $this->assertSame(
-            $requestText.$middlewareText.$anotherMiddlewareText,
+            $requestText . $middlewareText . $anotherMiddlewareText,
             (string) $applicationResponse->getBody()
         );
         $this->assertSame($originalResponse, $applicationResponse);

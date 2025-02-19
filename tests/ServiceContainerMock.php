@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TheNoFramework;
 
@@ -11,14 +11,16 @@ final readonly class ServiceContainerMock implements ContainerInterface
 {
     public function __construct(
         private array $entries = []
-    ) { }
+    ) {
+    }
 
     public function get(string $id)
     {
-        if (!$this->has($id)) {
+        if (! $this->has($id)) {
             throw new class($id) extends \RuntimeException implements NotFoundExceptionInterface {
-                public function __construct($id)
-                {
+                public function __construct(
+                    $id
+                ) {
                     parent::__construct("No entry was found for {$id} identifier");
                 }
             };

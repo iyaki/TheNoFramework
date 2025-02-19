@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TheNoFramework;
 
@@ -16,12 +16,21 @@ final class ApplicationWrapper
 
     private const ENV_SERVICE_CONTAINER_WRAPPER = 'SERVICE_CONTAINER_WRAPPER';
 
+    public function __clone()
+    {
+        throw new \BadMethodCallException('Cloning this class is not allowed');
+    }
+
+    public function __sleep()
+    {
+        throw new \BadMethodCallException('This class can\'t be serialized');
+    }
+
     /**
      * Runs the given request handler and middlewares
      *
-     * @param class-string $requestHandlerClass
-     * @param class-string[] $middlewares
-     * @return void
+     * @psalm-param class-string $requestHandlerClass
+     * @psalm-param class-string[] $middlewares
      */
     public static function run(string $requestHandlerClass, array $middlewares = []): void
     {
@@ -36,16 +45,6 @@ final class ApplicationWrapper
         self::emit($response);
     }
 
-    public function __clone()
-    {
-        throw new \BadMethodCallException('Cloning this class is not allowed');
-    }
-
-    public function __sleep()
-    {
-        throw new \BadMethodCallException('This class can\'t be serialized');
-    }
-
     private static function loadAutoLoader(): void
     {
         $envComposerAutoloaderPath = \getenv(self::ENV_AUTOLOAD_PATH);
@@ -54,7 +53,7 @@ final class ApplicationWrapper
             return;
         }
 
-        $defaultComposerAutoloaderPath = __DIR__.'/../../../autoload.php';
+        $defaultComposerAutoloaderPath = __DIR__ . '/../../../autoload.php';
         if (\file_exists($defaultComposerAutoloaderPath)) {
             require $defaultComposerAutoloaderPath;
         }
@@ -71,7 +70,7 @@ final class ApplicationWrapper
 
     private static function emit(ResponseInterface $response): void
     {
-        if (!$response->hasHeader('Content-Disposition') && !$response->hasHeader('Content-Range')) {
+        if (! $response->hasHeader('Content-Disposition') && ! $response->hasHeader('Content-Range')) {
             (new SapiEmitter())->emit($response);
             return;
         }

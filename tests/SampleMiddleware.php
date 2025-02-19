@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TheNoFramework;
 
@@ -13,7 +13,8 @@ final readonly class SampleMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private string $textToAdd = 'Middleware'
-    ) { }
+    ) {
+    }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

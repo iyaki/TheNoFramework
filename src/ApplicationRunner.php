@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TheNoFramework;
 
@@ -14,15 +14,24 @@ final readonly class ApplicationRunner
 {
     public function __construct(
         private ?ContainerInterface $serviceContainer = null
-    ) { }
+    ) {
+    }
+
+    public function __clone()
+    {
+        throw new \BadMethodCallException('Cloning this class is not allowed');
+    }
+
+    public function __sleep()
+    {
+        throw new \BadMethodCallException('This class can\'t be serialized');
+    }
 
     /**
      * Runs the given request handler and middlewares
      *
-     * @return ResponseInterface
-     * @param class-string $requestHandler
-     * @param ServerRequestInterface $serverRequest
-     * @param class-string[] $middlewares
+     * @psalm-param class-string $requestHandlerClass
+     * @psalm-param class-string[] $middlewares
      */
     public function run(
         string $requestHandlerClass,
@@ -37,29 +46,17 @@ final readonly class ApplicationRunner
         return $handler->handle($serverRequest);
     }
 
-    public function __clone()
-    {
-        throw new \BadMethodCallException('Cloning this class is not allowed');
-    }
-
-    public function __sleep()
-    {
-        throw new \BadMethodCallException('This class can\'t be serialized');
-    }
-
     /**
      * Get the request handler object
      *
      * @param class-string $requestHandlerClass
-     * @return RequestHandlerInterface
      */
     private function getHandlerFrom(string $requestHandlerClass): RequestHandlerInterface
     {
-        return (
-            null !== $this->serviceContainer && $this->serviceContainer->has($requestHandlerClass)
+        return $this->serviceContainer !== null && $this->serviceContainer->has($requestHandlerClass)
             ? $this->serviceContainer->get($requestHandlerClass)
             : new $requestHandlerClass()
-        );
+        ;
     }
 
     /**
@@ -72,7 +69,7 @@ final readonly class ApplicationRunner
     {
         return \array_map(
             fn (string $middlewareClass): MiddlewareInterface => (
-                null !== $this->serviceContainer && $this->serviceContainer->has($middlewareClass)
+                $this->serviceContainer !== null && $this->serviceContainer->has($middlewareClass)
                 ? $this->serviceContainer->get($middlewareClass)
                 : new $middlewareClass()
             ),
@@ -83,19 +80,20 @@ final readonly class ApplicationRunner
     /**
      * Creates a request handler chaining the proper hndler and the middlewares
      *
-     * @param RequestHandlerInterface $handler
      * @param MiddlewareInterface[] $middlewares
-     * @return RequestHandlerInterface
      */
     private function makeChainedHandler(RequestHandlerInterface $handler, MiddlewareInterface ...$middlewares): RequestHandlerInterface
     {
         foreach ($middlewares as $middleware) {
             $handler = new class($middleware, $handler) implements RequestHandlerInterface {
                 private MiddlewareInterface $middleware;
+
                 private RequestHandlerInterface $handler;
 
-                public function __construct(MiddlewareInterface $middleware, RequestHandlerInterface $handler)
-                {
+                public function __construct(
+                    MiddlewareInterface $middleware,
+                    RequestHandlerInterface $handler
+                ) {
                     $this->middleware = $middleware;
                     $this->handler = $handler;
                 }

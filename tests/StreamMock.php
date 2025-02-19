@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TheNoFramework;
 
@@ -10,7 +10,8 @@ final class StreamMock implements StreamInterface
 {
     public function __construct(
         private string $stringContent = ''
-    ) { }
+    ) {
+    }
 
     public function __toString(): string
     {
