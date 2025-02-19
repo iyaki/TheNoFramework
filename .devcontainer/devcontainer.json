@@ -1,7 +1,10 @@
 {
     "name": "TheNoFrameworkDevEnv",
     // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-    "image": "dunglas/frankenphp:1-php8.4",
+    "image": "php:8.4-cli",
+
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    "forwardPorts": [8080],
 
     // Features to add to the dev container. More info: https://containers.dev/features.
     "features": {
@@ -9,25 +12,10 @@
             "version": "latest",
             "ppa": "true"
         }
-    },
+    }
 
     // Configure tool-specific properties.
     // "customizations": {},
-
-    "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached",
-    "workspaceFolder": "/app",
-    "containerEnv": {
-        "SERVER_NAME": "http://localhost:8080",
-        "CADDY_GLOBAL_OPTIONS": "auto_https off"
-    },
-    "overrideCommand": false,
-
-    // Use 'forwardPorts' to make a list of ports inside the container available locally.
-    "forwardPorts": [8080],
-    "mounts": [
-        { "source": "thenoframework-caddy_data", "target": "/data", "type": "volume" },
-        { "source": "thenoframework-caddy_config", "target": "/config", "type": "volume" }
-    ]
 
     // Use 'postCreateCommand' to run commands after the container is created.
     // "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
