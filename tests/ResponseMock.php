@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TheNoFramework;
 
+use RuntimeException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -39,27 +40,27 @@ final readonly class ResponseMock implements ResponseInterface
 
     public function getProtocolVersion(): string
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function withProtocolVersion(string $version): static
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function getHeaders(): array
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function hasHeader(string $name): bool
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function getHeader(string $name): array
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function getHeaderLine(string $name): string

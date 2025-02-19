@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TheNoFramework;
 
+use RuntimeException;
 use Psr\Http\Message\StreamInterface;
 
 final class StreamMock implements StreamInterface
@@ -20,42 +21,43 @@ final class StreamMock implements StreamInterface
 
     public function close(): void
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function detach()
     {
+        throw new RuntimeException('Not implemented');
     }
 
     public function getSize(): ?int
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
         // return \strlen($this->fakedStream);
     }
 
     public function tell(): int
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function eof(): bool
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function isSeekable(): bool
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function seek(int $offset, int $whence = SEEK_SET): void
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function rewind(): void
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function isWritable(): bool
@@ -76,16 +78,16 @@ final class StreamMock implements StreamInterface
 
     public function read(int $length): string
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function getContents(): string
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 
     public function getMetadata(?string $key = null)
     {
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 }

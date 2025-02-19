@@ -9,7 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class ApplicationRunnerTest extends TestCase
 {
-    public function testRunWithoutServiceContainerWithoutMiddlewares()
+    public function testRunWithoutServiceContainerWithoutMiddlewares(): void
     {
         $applicationRunner = new ApplicationRunner();
 
@@ -25,7 +25,7 @@ final class ApplicationRunnerTest extends TestCase
         $this->assertSame($requestText, (string) $applicationResponse->getBody());
     }
 
-    public function testRunWithoutServiceContainerWithMiddlewares()
+    public function testRunWithoutServiceContainerWithMiddlewares(): void
     {
         $applicationRunner = new ApplicationRunner();
 
@@ -50,7 +50,7 @@ final class ApplicationRunnerTest extends TestCase
         );
     }
 
-    public function testRunWithServiceContainerWithoutMiddlewares()
+    public function testRunWithServiceContainerWithoutMiddlewares(): void
     {
         $originalResponse = new ResponseMock();
         $applicationRunner = new ApplicationRunner(
@@ -72,7 +72,7 @@ final class ApplicationRunnerTest extends TestCase
         $this->assertSame($originalResponse, $applicationResponse);
     }
 
-    public function testRunWithServiceContainerWithMiddlewares()
+    public function testRunWithServiceContainerWithMiddlewares(): void
     {
         $requestText = 'TheNoFramework';
         $middlewareText = 'MiddlewareFromServiceContainer';

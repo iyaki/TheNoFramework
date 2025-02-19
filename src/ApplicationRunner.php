@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TheNoFramework;
 
+use BadMethodCallException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,12 +20,12 @@ final readonly class ApplicationRunner
 
     public function __clone()
     {
-        throw new \BadMethodCallException('Cloning this class is not allowed');
+        throw new BadMethodCallException('Cloning this class is not allowed');
     }
 
     public function __sleep()
     {
-        throw new \BadMethodCallException('This class can\'t be serialized');
+        throw new BadMethodCallException('This class can\'t be serialized');
     }
 
     /**
@@ -53,7 +54,7 @@ final readonly class ApplicationRunner
      */
     private function getHandlerFrom(string $requestHandlerClass): RequestHandlerInterface
     {
-        return $this->serviceContainer !== null && $this->serviceContainer->has($requestHandlerClass)
+        return $this->serviceContainer instanceof ContainerInterface && $this->serviceContainer->has($requestHandlerClass)
             ? $this->serviceContainer->get($requestHandlerClass)
             : new $requestHandlerClass()
         ;
@@ -69,7 +70,7 @@ final readonly class ApplicationRunner
     {
         return \array_map(
             fn (string $middlewareClass): MiddlewareInterface => (
-                $this->serviceContainer !== null && $this->serviceContainer->has($middlewareClass)
+                $this->serviceContainer instanceof ContainerInterface && $this->serviceContainer->has($middlewareClass)
                 ? $this->serviceContainer->get($middlewareClass)
                 : new $middlewareClass()
             ),
@@ -85,17 +86,9 @@ final readonly class ApplicationRunner
     private function makeChainedHandler(RequestHandlerInterface $handler, MiddlewareInterface ...$middlewares): RequestHandlerInterface
     {
         foreach ($middlewares as $middleware) {
-            $handler = new class($middleware, $handler) implements RequestHandlerInterface {
-                private MiddlewareInterface $middleware;
-
-                private RequestHandlerInterface $handler;
-
-                public function __construct(
-                    MiddlewareInterface $middleware,
-                    RequestHandlerInterface $handler
-                ) {
-                    $this->middleware = $middleware;
-                    $this->handler = $handler;
+            $handler = new readonly class($middleware, $handler) implements RequestHandlerInterface {
+                public function __construct(private MiddlewareInterface $middleware, private RequestHandlerInterface $handler)
+                {
                 }
 
                 public function handle(ServerRequestInterface $request): ResponseInterface

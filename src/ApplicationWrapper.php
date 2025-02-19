@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TheNoFramework;
 
+use BadMethodCallException;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
@@ -12,18 +13,18 @@ use Psr\Http\Message\ResponseInterface;
 
 final class ApplicationWrapper
 {
-    private const ENV_AUTOLOAD_PATH = 'AUTOLOAD_PATH';
+    private const string ENV_AUTOLOAD_PATH = 'AUTOLOAD_PATH';
 
-    private const ENV_SERVICE_CONTAINER_WRAPPER = 'SERVICE_CONTAINER_WRAPPER';
+    private const string ENV_SERVICE_CONTAINER_WRAPPER = 'SERVICE_CONTAINER_WRAPPER';
 
     public function __clone()
     {
-        throw new \BadMethodCallException('Cloning this class is not allowed');
+        throw new BadMethodCallException('Cloning this class is not allowed');
     }
 
     public function __sleep()
     {
-        throw new \BadMethodCallException('This class can\'t be serialized');
+        throw new BadMethodCallException('This class can\'t be serialized');
     }
 
     /**
