@@ -49,7 +49,7 @@ final class ApplicationWrapper
     private static function loadAutoLoader(): void
     {
         $envComposerAutoloaderPath = \getenv(self::ENV_AUTOLOAD_PATH);
-        if ($envComposerAutoloaderPath) {
+        if (\is_string($envComposerAutoloaderPath) && $envComposerAutoloaderPath !== '') {
             require $envComposerAutoloaderPath;
             return;
         }
@@ -63,7 +63,7 @@ final class ApplicationWrapper
     private static function getServiceContainer(): ?ContainerInterface
     {
         $serviceContainer = \getenv(self::ENV_SERVICE_CONTAINER_WRAPPER);
-        if ($serviceContainer) {
+        if (\is_string($serviceContainer) && $serviceContainer !== '') {
             return require $serviceContainer;
         }
         return null;

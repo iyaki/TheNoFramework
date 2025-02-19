@@ -65,6 +65,7 @@ final readonly class ResponseMock implements ResponseInterface
 
     public function getHeaderLine(string $name): string
     {
+        throw new RuntimeException('Not implemented');
     }
 
     public function withHeader(string $name, $value): static
@@ -74,10 +75,12 @@ final readonly class ResponseMock implements ResponseInterface
 
     public function withAddedHeader(string $name, $value): static
     {
+        throw new RuntimeException('Not implemented');
     }
 
     public function withoutHeader(string $name): static
     {
+        throw new RuntimeException('Not implemented');
     }
 
     public function getBody(): StreamInterface
@@ -87,5 +90,6 @@ final readonly class ResponseMock implements ResponseInterface
 
     public function withBody(StreamInterface $body): static
     {
+        throw new RuntimeException('Not implemented');
     }
 }

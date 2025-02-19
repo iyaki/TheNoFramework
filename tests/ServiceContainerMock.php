@@ -20,7 +20,7 @@ final readonly class ServiceContainerMock implements ContainerInterface
         if (! $this->has($id)) {
             throw new class($id) extends RuntimeException implements NotFoundExceptionInterface {
                 public function __construct(
-                    $id
+                    string $message = '', int $code = 0, ?\Throwable $previous = null
                 ) {
                     parent::__construct("No entry was found for {$id} identifier");
                 }
