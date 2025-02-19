@@ -9,14 +9,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class SampleMiddleware implements MiddlewareInterface
+final readonly class SampleMiddleware implements MiddlewareInterface
 {
-    private string $textToAdd;
-
-    public function __construct(string $textToAdd = 'Middleware')
-    {
-        $this->textToAdd = $textToAdd;
-    }
+    public function __construct(
+        private string $textToAdd = 'Middleware'
+    ) { }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

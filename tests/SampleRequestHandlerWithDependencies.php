@@ -8,14 +8,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class SampleRequestHandlerWithDependencies implements RequestHandlerInterface
+final readonly class SampleRequestHandlerWithDependencies implements RequestHandlerInterface
 {
-    private $response;
-
-    public function __construct(ResponseInterface $response)
-    {
-        $this->response = $response;
-    }
+    public function __construct(
+        private ResponseInterface $response
+    ) { }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

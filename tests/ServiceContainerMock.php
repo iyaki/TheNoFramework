@@ -7,30 +7,27 @@ namespace TheNoFramework;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-final class ServiceContainerMock implements ContainerInterface
+final readonly class ServiceContainerMock implements ContainerInterface
 {
-    private array $container = [];
+    public function __construct(
+        private array $entries = []
+    ) { }
 
-    public function __construct(array $container)
-    {
-        $this->container = $container;
-    }
-
-    public function get($id)
+    public function get(string $id)
     {
         if (!$this->has($id)) {
-            throw new class($id) extends \Exception implements NotFoundExceptionInterface {
+            throw new class($id) extends \RuntimeException implements NotFoundExceptionInterface {
                 public function __construct($id)
                 {
                     parent::__construct("No entry was found for {$id} identifier");
                 }
             };
         }
-        return $this->container[$id];
+        return $this->entries[$id];
     }
 
-    public function has($id)
+    public function has(string $id): bool
     {
-        return array_key_exists($id, $this->container);
+        return array_key_exists($id, $this->entries);
     }
 }

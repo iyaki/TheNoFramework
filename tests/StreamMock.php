@@ -6,75 +6,85 @@ namespace TheNoFramework;
 
 use Psr\Http\Message\StreamInterface;
 
-class StreamMock implements StreamInterface
+final class StreamMock implements StreamInterface
 {
-    private $fakedStream = '';
+    public function __construct(
+        private string $stringContent = ''
+    ) { }
 
-    public function __construct(string $content = '')
+    public function __toString(): string
     {
-        $this->fakedStream = $content;
+        return $this->stringContent;
     }
 
-    public function write($string)
+    public function close(): void
     {
-        $this->fakedStream .= $string;
-        return strlen($string);
-    }
-
-    public function __toString()
-    {
-        return $this->fakedStream;
-    }
-
-    public function close()
-    {
+        throw new \RuntimeException('Not implemented');
     }
 
     public function detach()
     {
     }
 
-    public function getSize()
+    public function getSize(): ?int
     {
+        throw new \RuntimeException('Not implemented');
+        // return \strlen($this->fakedStream);
     }
 
-    public function tell()
+    public function tell(): int
     {
+        throw new \RuntimeException('Not implemented');
     }
 
-    public function eof()
+    public function eof(): bool
     {
+        throw new \RuntimeException('Not implemented');
     }
 
-    public function isSeekable()
+    public function isSeekable(): bool
     {
+        throw new \RuntimeException('Not implemented');
     }
 
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek(int $offset, int $whence = SEEK_SET): void
     {
+        throw new \RuntimeException('Not implemented');
     }
 
-    public function rewind()
+    public function rewind(): void
     {
+        throw new \RuntimeException('Not implemented');
     }
 
-    public function isWritable()
+    public function isWritable(): bool
     {
+        return true;
     }
 
-    public function isReadable()
+    public function write(string $string): int
     {
+        $this->stringContent .= $string;
+        return strlen($string);
     }
 
-    public function read($length)
+    public function isReadable(): bool
     {
+        return true;
     }
 
-    public function getContents()
+    public function read(int $length): string
     {
+        throw new \RuntimeException('Not implemented');
     }
 
-    public function getMetadata($key = null)
+    public function getContents(): string
     {
+        throw new \RuntimeException('Not implemented');
+    }
+
+    public function getMetadata(?string $key = null)
+    {
+        throw new \RuntimeException('Not implemented');
     }
 }

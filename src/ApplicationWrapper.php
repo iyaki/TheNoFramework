@@ -19,8 +19,8 @@ final class ApplicationWrapper
     /**
      * Runs the given request handler and middlewares
      *
-     * @param string $requestHandlerClass
-     * @param string[] $middlewares
+     * @param class-string $requestHandlerClass
+     * @param class-string[] $middlewares
      * @return void
      */
     public static function run(string $requestHandlerClass, array $middlewares = []): void
@@ -38,31 +38,31 @@ final class ApplicationWrapper
 
     public function __clone()
     {
-        throw new \DomainException('Cloning this class is not allowed');
+        throw new \BadMethodCallException('Cloning this class is not allowed');
     }
 
     public function __sleep()
     {
-        throw new \DomainException('This class can\'t be serialized');
+        throw new \BadMethodCallException('This class can\'t be serialized');
     }
 
     private static function loadAutoLoader(): void
     {
-        $envComposerAutoloaderPath = getenv(self::ENV_AUTOLOAD_PATH);
+        $envComposerAutoloaderPath = \getenv(self::ENV_AUTOLOAD_PATH);
         if ($envComposerAutoloaderPath) {
             require $envComposerAutoloaderPath;
             return;
         }
 
         $defaultComposerAutoloaderPath = __DIR__.'/../../../autoload.php';
-        if (file_exists($defaultComposerAutoloaderPath)) {
+        if (\file_exists($defaultComposerAutoloaderPath)) {
             require $defaultComposerAutoloaderPath;
         }
     }
 
     private static function getServiceContainer(): ?ContainerInterface
     {
-        $serviceContainer = getenv(self::ENV_SERVICE_CONTAINER_WRAPPER);
+        $serviceContainer = \getenv(self::ENV_SERVICE_CONTAINER_WRAPPER);
         if ($serviceContainer) {
             return require $serviceContainer;
         }
@@ -71,9 +71,7 @@ final class ApplicationWrapper
 
     private static function emit(ResponseInterface $response): void
     {
-        if (!$response->hasHeader('Content-Disposition')
-            && !$response->hasHeader('Content-Range')
-        ) {
+        if (!$response->hasHeader('Content-Disposition') && !$response->hasHeader('Content-Range')) {
             (new SapiEmitter())->emit($response);
             return;
         }

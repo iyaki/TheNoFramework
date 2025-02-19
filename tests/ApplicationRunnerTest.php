@@ -9,11 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class ApplicationRunnerTest extends TestCase
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function testRunWithoutServiceContainerWithoutMiddlewares()
     {
         $applicationRunner = new ApplicationRunner();
