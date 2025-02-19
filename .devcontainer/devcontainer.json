@@ -12,6 +12,10 @@
             "version": "latest",
             "ppa": "true"
         }
+    },
+
+    "postCreateCommand": {
+        "install composer": [ ".devcontainer/composer.sh" ]
     }
 
     // Configure tool-specific properties.
