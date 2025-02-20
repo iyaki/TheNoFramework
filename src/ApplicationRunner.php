@@ -71,10 +71,10 @@ final readonly class ApplicationRunner
     {
         return \array_map(
             fn (string $middlewareClass): MiddlewareInterface => (
-            /** @phpstan-ignore return.type */
-            $this->serviceContainer instanceof ContainerInterface && $this->serviceContainer->has($middlewareClass)
-                ? $this->serviceContainer->get($middlewareClass)
-                : new $middlewareClass()
+                /** @phpstan-ignore return.type */
+                $this->serviceContainer instanceof ContainerInterface && $this->serviceContainer->has($middlewareClass)
+                    ? $this->serviceContainer->get($middlewareClass)
+                    : new $middlewareClass()
             ),
             $middlewareClassArray
         );
@@ -87,8 +87,10 @@ final readonly class ApplicationRunner
     {
         foreach ($middlewares as $middleware) {
             $handler = new readonly class($middleware, $handler) implements RequestHandlerInterface {
-                public function __construct(private MiddlewareInterface $middleware, private RequestHandlerInterface $handler)
-                {
+                public function __construct(
+                    private MiddlewareInterface $middleware,
+                    private RequestHandlerInterface $handler
+                ) {
                 }
 
                 public function handle(ServerRequestInterface $request): ResponseInterface

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TheNoFramework;
 
-use RuntimeException;
 use Psr\Http\Message\StreamInterface;
+use RuntimeException;
 
 final class StreamMock implements StreamInterface
 {

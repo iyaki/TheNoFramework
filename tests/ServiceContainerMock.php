@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace TheNoFramework;
 
-use RuntimeException;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use RuntimeException;
 
 final readonly class ServiceContainerMock implements ContainerInterface
 {
