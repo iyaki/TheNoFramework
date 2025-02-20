@@ -42,6 +42,7 @@
         }
     },
     "scripts": {
+        "static-analysis": "phpstan analyse --level max src tests",
         "style-check": "ecs",
         "style-fix": "ecs --fix",
         "test": "phpunit tests"
