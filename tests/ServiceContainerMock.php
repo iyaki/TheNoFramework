@@ -10,6 +10,9 @@ use Psr\Container\NotFoundExceptionInterface;
 
 final readonly class ServiceContainerMock implements ContainerInterface
 {
+    /**
+     * @param mixed[] $entries
+     */
     public function __construct(
         private array $entries = []
     ) {
@@ -18,19 +21,13 @@ final readonly class ServiceContainerMock implements ContainerInterface
     public function get(string $id)
     {
         if (! $this->has($id)) {
-            throw new class($id) extends RuntimeException implements NotFoundExceptionInterface {
-                public function __construct(
-                    string $message = '', int $code = 0, ?\Throwable $previous = null
-                ) {
-                    parent::__construct("No entry was found for {$id} identifier");
-                }
-            };
+            throw new class("No entry was found for {$id} identifier") extends RuntimeException implements NotFoundExceptionInterface { };
         }
         return $this->entries[$id];
     }
 
     public function has(string $id): bool
     {
-        return array_key_exists($id, $this->entries);
+        return \array_key_exists($id, $this->entries);
     }
 }

@@ -27,10 +27,7 @@ final readonly class ResponseMock implements ResponseInterface
 
     public function withStatus(int $code, string $reasonPhrase = ''): static
     {
-        $response = clone $this;
-        $response->status = $code;
-        $response->reasonPhrase = $reasonPhrase;
-        return $response;
+        throw new RuntimeException('Not implemented');
     }
 
     public function getReasonPhrase(): string

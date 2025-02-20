@@ -54,6 +54,7 @@ final readonly class ApplicationRunner
      */
     private function getHandlerFrom(string $requestHandlerClass): RequestHandlerInterface
     {
+        /** @phpstan-ignore return.type */
         return $this->serviceContainer instanceof ContainerInterface && $this->serviceContainer->has($requestHandlerClass)
             ? $this->serviceContainer->get($requestHandlerClass)
             : new $requestHandlerClass()
@@ -70,7 +71,8 @@ final readonly class ApplicationRunner
     {
         return \array_map(
             fn (string $middlewareClass): MiddlewareInterface => (
-                $this->serviceContainer instanceof ContainerInterface && $this->serviceContainer->has($middlewareClass)
+            /** @phpstan-ignore return.type */
+            $this->serviceContainer instanceof ContainerInterface && $this->serviceContainer->has($middlewareClass)
                 ? $this->serviceContainer->get($middlewareClass)
                 : new $middlewareClass()
             ),
@@ -80,8 +82,6 @@ final readonly class ApplicationRunner
 
     /**
      * Creates a request handler chaining the proper hndler and the middlewares
-     *
-     * @param MiddlewareInterface[] $middlewares
      */
     private function makeChainedHandler(RequestHandlerInterface $handler, MiddlewareInterface ...$middlewares): RequestHandlerInterface
     {

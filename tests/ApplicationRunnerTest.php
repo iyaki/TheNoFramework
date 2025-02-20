@@ -22,7 +22,7 @@ final class ApplicationRunnerTest extends TestCase
             $request
         );
 
-        $this->assertSame($requestText, (string) $applicationResponse->getBody());
+        self::assertSame($requestText, (string) $applicationResponse->getBody());
     }
 
     public function testRunWithoutServiceContainerWithMiddlewares(): void
@@ -44,7 +44,7 @@ final class ApplicationRunnerTest extends TestCase
             ]
         );
 
-        $this->assertSame(
+        self::assertSame(
             $requestText . $middlewareText . $anotherMiddlewareText,
             (string) $applicationResponse->getBody()
         );
@@ -68,8 +68,8 @@ final class ApplicationRunnerTest extends TestCase
             $request
         );
 
-        $this->assertSame($requestText, (string) $applicationResponse->getBody());
-        $this->assertSame($originalResponse, $applicationResponse);
+        self::assertSame($requestText, (string) $applicationResponse->getBody());
+        self::assertSame($originalResponse, $applicationResponse);
     }
 
     public function testRunWithServiceContainerWithMiddlewares(): void
@@ -99,10 +99,10 @@ final class ApplicationRunnerTest extends TestCase
             ]
         );
 
-        $this->assertSame(
+        self::assertSame(
             $requestText . $middlewareText . $anotherMiddlewareText,
             (string) $applicationResponse->getBody()
         );
-        $this->assertSame($originalResponse, $applicationResponse);
+        self::assertSame($originalResponse, $applicationResponse);
     }
 }

@@ -64,6 +64,7 @@ final class ApplicationWrapper
     {
         $serviceContainer = \getenv(self::ENV_SERVICE_CONTAINER_WRAPPER);
         if (\is_string($serviceContainer) && $serviceContainer !== '') {
+            /** @var ContainerInterface */
             return require $serviceContainer;
         }
         return null;
