@@ -13,8 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 
 final class ApplicationWrapper
 {
-    private const string ENV_AUTOLOAD_PATH = 'AUTOLOAD_PATH';
-
     private const string ENV_SERVICE_CONTAINER_WRAPPER = 'SERVICE_CONTAINER_WRAPPER';
 
     public function __clone()
@@ -35,7 +33,6 @@ final class ApplicationWrapper
      */
     public static function run(string $requestHandlerClass, array $middlewares = []): void
     {
-        self::loadAutoLoader();
 
         $applicationRunner = new ApplicationRunner(self::getServiceContainer());
 
@@ -44,20 +41,6 @@ final class ApplicationWrapper
         $response = $applicationRunner->run($requestHandlerClass, $serverRequest, $middlewares);
 
         self::emit($response);
-    }
-
-    private static function loadAutoLoader(): void
-    {
-        $envComposerAutoloaderPath = \getenv(self::ENV_AUTOLOAD_PATH);
-        if (\is_string($envComposerAutoloaderPath) && $envComposerAutoloaderPath !== '') {
-            require $envComposerAutoloaderPath;
-            return;
-        }
-
-        $defaultComposerAutoloaderPath = __DIR__ . '/../../../autoload.php';
-        if (\file_exists($defaultComposerAutoloaderPath)) {
-            require $defaultComposerAutoloaderPath;
-        }
     }
 
     private static function getServiceContainer(): ?ContainerInterface
