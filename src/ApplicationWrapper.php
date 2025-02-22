@@ -10,6 +10,8 @@ use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 final class ApplicationWrapper
 {
@@ -22,14 +24,14 @@ final class ApplicationWrapper
 
     public function __sleep()
     {
-        throw new BadMethodCallException('This class can\'t be serialized');
+        throw new BadMethodCallException("This class can't be serialized");
     }
 
     /**
      * Runs the given request handler and middlewares
      *
-     * @psalm-param class-string $requestHandlerClass
-     * @psalm-param class-string[] $middlewares
+     * @param class-string<RequestHandlerInterface> $requestHandlerClass
+     * @param class-string<MiddlewareInterface>[] $middlewares
      */
     public static function run(string $requestHandlerClass, array $middlewares = []): void
     {
@@ -47,9 +49,10 @@ final class ApplicationWrapper
     {
         $serviceContainer = \getenv(self::ENV_SERVICE_CONTAINER_WRAPPER);
         if (\is_string($serviceContainer) && $serviceContainer !== '') {
-            /** @var ContainerInterface */
+            /** @phpstan-ignore return.type */
             return require $serviceContainer;
         }
+
         return null;
     }
 
@@ -59,6 +62,7 @@ final class ApplicationWrapper
             (new SapiEmitter())->emit($response);
             return;
         }
+
         (new SapiStreamEmitter())->emit($response);
     }
 }

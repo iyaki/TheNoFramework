@@ -25,14 +25,14 @@ final readonly class ApplicationRunner
 
     public function __sleep()
     {
-        throw new BadMethodCallException('This class can\'t be serialized');
+        throw new BadMethodCallException("This class can't be serialized");
     }
 
     /**
      * Runs the given request handler and middlewares
      *
-     * @psalm-param class-string $requestHandlerClass
-     * @psalm-param class-string[] $middlewares
+     * @param class-string<RequestHandlerInterface> $requestHandlerClass
+     * @param class-string<MiddlewareInterface>[] $middlewares
      */
     public function run(
         string $requestHandlerClass,
@@ -50,7 +50,9 @@ final readonly class ApplicationRunner
     /**
      * Get the request handler object
      *
-     * @param class-string $requestHandlerClass
+     * @template T of RequestHandlerInterface
+     * @param class-string<T> $requestHandlerClass
+     * @return T
      */
     private function getHandlerFrom(string $requestHandlerClass): RequestHandlerInterface
     {
@@ -64,7 +66,7 @@ final readonly class ApplicationRunner
     /**
      * Get the middlewares objects array
      *
-     * @param class-string[] $middlewareClassArray
+     * @param class-string<MiddlewareInterface>[] $middlewareClassArray
      * @return MiddlewareInterface[]
      */
     private function getMiddlewaresFrom(array $middlewareClassArray): array
