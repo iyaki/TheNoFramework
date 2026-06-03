@@ -2624,16 +2624,16 @@
         },
         {
             "name": "tomasvotruba/class-leak",
-            "version": "2.1.1",
+            "version": "2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TomasVotruba/class-leak.git",
-                "reference": "a8eb7b06dd08fff9745e839144e68e695eb687f1"
+                "reference": "c13a50f0d4593d17fb19a2278a59556662e663af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TomasVotruba/class-leak/zipball/a8eb7b06dd08fff9745e839144e68e695eb687f1",
-                "reference": "a8eb7b06dd08fff9745e839144e68e695eb687f1",
+                "url": "https://api.github.com/repos/TomasVotruba/class-leak/zipball/c13a50f0d4593d17fb19a2278a59556662e663af",
+                "reference": "c13a50f0d4593d17fb19a2278a59556662e663af",
                 "shasum": ""
             },
             "require": {
@@ -2656,7 +2656,7 @@
             "description": "Detect leaking classes",
             "support": {
                 "issues": "https://github.com/TomasVotruba/class-leak/issues",
-                "source": "https://github.com/TomasVotruba/class-leak/tree/2.1.1"
+                "source": "https://github.com/TomasVotruba/class-leak/tree/2.1.4"
             },
             "funding": [
                 {
@@ -2668,7 +2668,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-21T09:28:47+00:00"
+            "time": "2026-05-27T08:33:55+00:00"
         },
         {
             "name": "tomasvotruba/type-coverage",
